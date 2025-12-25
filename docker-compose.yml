@@ -5,5 +5,5 @@ services:
     build: .
     container_name: morty_container
     ports:
-      - "80:5000"
+      - "5005:5000"  # <-- İŞTE BURAYI DEĞİŞTİRDİK (Soldaki senin portun)
     restart: always
