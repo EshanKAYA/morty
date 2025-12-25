@@ -3,73 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rick and Morty - MORTY APP</title>
+    <title>Rick and Morty Portal Simülatörü</title>
     <style>
         body {
-            background-color: #202329;
+            background-color: #1a1c20; /* Daha koyu bir uzay siyahı */
             color: white;
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
+            background-image: radial-gradient(circle at center, #2a2d35 0%, #1a1c20 100%);
         }
         h1 {
             text-align: center;
             color: #97ce4c;
-            font-size: 3em;
-            margin-bottom: 30px;
-            text-shadow: 0 0 10px #00b5cc;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px #00b5cc;
         }
+        
+        /* --- YENİ PORTAL BUTONU --- */
+        .portal-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .portal-btn {
+            background-color: #97ce4c;
+            color: #1a1c20;
+            text-decoration: none;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 50px;
+            border: 3px solid #00b5cc;
+            box-shadow: 0 0 20px #97ce4c, inset 0 0 10px #00b5cc;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .portal-btn:hover {
+            background-color: #00b5cc;
+            border-color: #97ce4c;
+            box-shadow: 0 0 40px #00b5cc, inset 0 0 20px #97ce4c;
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+        /* KARTLARIN DÜZENİ (Ortalanmış 4 kart) */
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
-            max-width: 1200px;
+            gap: 25px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         .card {
             background-color: #3c3e44;
             border-radius: 15px;
             overflow: hidden;
-            width: 300px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            transition: transform 0.2s;
+            width: 280px; /* Kartları biraz daralttık */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+            transition: transform 0.3s;
+            border: 1px solid #444;
         }
         .card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 15px #97ce4c;
+            transform: translateY(-10px);
+            box-shadow: 0 0 25px rgba(151, 206, 76, 0.6);
+            border-color: #97ce4c;
         }
         .card img {
             width: 100%;
             height: 250px;
             object-fit: cover;
+            border-bottom: 2px solid #202329;
         }
         .info {
             padding: 15px;
         }
         .name {
-            font-size: 1.4em;
+            font-size: 1.3em;
             font-weight: bold;
             color: #f5f5f5;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
+        
+        /* İSTENİLEN BİLGİ ALANLARI */
+        .info-row {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+        .label {
+            color: #9e9e9e;
+            font-weight: bold;
+            font-size: 0.8em;
+            display: block;
+        }
+        .value {
+            color: white;
+        }
+
+        /* Canlılık Durumu Topları */
         .status-indicator {
             display: inline-block;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             margin-right: 5px;
         }
-        .alive { background-color: #55cc44; }
-        .dead { background-color: #d63d2e; }
+        .alive { background-color: #55cc44; box-shadow: 0 0 5px #55cc44;}
+        .dead { background-color: #d63d2e; box-shadow: 0 0 5px #d63d2e;}
         .unknown { background-color: #9e9e9e; }
-        
-        .details { color: #9e9e9e; font-size: 0.9em; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-    <h1>MORTY APP V2</h1>
+    <h1>MULTIVERSE PORTAL SİMÜLATÖRÜ</h1>
+
+    <div class="portal-container">
+        <a href="/" class="portal-btn">🌀 PORTAL AÇ (4 Rastgele Varlık) 🌀</a>
+    </div>
     
     <div class="container">
         {% for k in karakterler %}
@@ -77,19 +131,28 @@
             <img src="{{ k.image }}" alt="{{ k.name }}">
             <div class="info">
                 <div class="name">{{ k.name }}</div>
-                <div>
-                    {% if k.status == 'Alive' %}
-                        <span class="status-indicator alive"></span>Canlı
-                    {% elif k.status == 'Dead' %}
-                        <span class="status-indicator dead"></span>Ölü
-                    {% else %}
-                        <span class="status-indicator unknown"></span>Bilinmiyor
-                    {% endif %}
-                    - {{ k.species }}
+                
+                <div class="info-row">
+                    <span class="label">DURUM:</span>
+                    <span class="value">
+                        {% if k.status == 'Alive' %}
+                            <span class="status-indicator alive"></span>Canlı
+                        {% elif k.status == 'Dead' %}
+                            <span class="status-indicator dead"></span>Ölü
+                        {% else %}
+                            <span class="status-indicator unknown"></span>Bilinmiyor
+                        {% endif %}
+                    </span>
                 </div>
-                <div class="details">
-                    <br>Son Görüldüğü Yer:<br>
-                    <span style="color:white;">{{ k.location.name }}</span>
+
+                <div class="info-row">
+                    <span class="label">TÜR / CİNSİYET:</span>
+                    <span class="value">{{ k.species }} ({{ k.gender }})</span>
+                </div>
+                
+                <div class="info-row" style="margin-top: 15px;">
+                    <span class="label">SON GÖRÜLDÜĞÜ GEZEGEN/KONUM:</span>
+                    <span class="value" style="color: #97ce4c;">{{ k.location.name }}</span>
                 </div>
             </div>
         </div>
