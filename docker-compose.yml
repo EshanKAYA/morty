@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  morty-web:
+    build: .
+    container_name: morty_container
+    ports:
+      - "80:5000"
+    restart: always
